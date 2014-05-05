@@ -1,0 +1,23 @@
+{
+  "name": "sailsSimple",
+  "version": "0.0.0",
+  "authors": [
+    "Ivan Sklyarov <sklyarov.161@gmail.com>"
+  ],
+  "main": "app.js",
+  "keywords": [
+    "sails"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1"
+  }
+}
