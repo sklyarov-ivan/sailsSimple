@@ -1,0 +1,27 @@
+<div class="container">
+    <table class="table">
+        <tr>
+            <td>name</td>
+            <td>title</td>
+            <td>email</td>
+            <td colspan="3">actions</td>
+        </tr>
+        <% _.each(users, function(user,inx){ %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.title %></td>
+                <td><%= user.email %></td>
+                <td><a class="btn btn-success" href="/user/show/<%= user.id %>">show</a></td>
+                <td><a class="btn btn-primary" href="/user/edit/<%= user.id %>">edit</a></td>
+                <td>
+                    <form action="/user/destroy/<%=user.id%>" method="POST">
+                        <input type="hidden" name="_method" value="delete">
+                        <input class="btn btn-danger" type="submit" value="delete">
+                        <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+
+    </table>
+</div>
