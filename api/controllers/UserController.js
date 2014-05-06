@@ -34,8 +34,11 @@ module.exports = {
       // res.session.flash = {};
       req.session.authenticated = true;
       req.session.user = user;
-      // return res.redirect('/user/new');
-      res.redirect('/user/show/'+user.id);
+      user.online = true;
+      user.save(function(err){
+        if (err) return next(err);
+        return res.redirect('/user/show/'+user.id);
+      });
     });
   },
   show: function(req,res,next){
@@ -57,6 +60,24 @@ module.exports = {
     });
   },
   update: function(req,res,next){
+    if (req.session.user && req.session.user.id) {
+      userObj = {
+        name: req.param('name'),
+        title: req.param('title'),
+        email: req.param('email'),
+        password: req.param('password'),
+        pass_confirmation: req.param('pass_confirmation'),
+        admin: req.param('admin')
+      };
+    } else {
+      userObj = {
+        name: req.param('name'),
+        title: req.param('title'),
+        email: req.param('email'),
+        password: req.param('password'),
+        pass_confirmation: req.param('pass_confirmation')
+      };
+    }
     User.update(req.param('id'),req.params.all(),function userUpdated(err){
       if (err){
         return res.redirect('/user/edit/'+req.param('id'));

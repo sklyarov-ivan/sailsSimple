@@ -3,5 +3,6 @@
     <p>name <%-user.name%></p>
     <p>title <%-user.title%></p>
     <p>email <%-user.email%></p>
+    <p>role <%-(user.admin)? 'admin': 'user'%></p>
     <p><a class="btn btn-primary" href="/user/edit/<%= user.id %>">edit</a></p>
 </div>

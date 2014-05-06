@@ -9,6 +9,11 @@
         <div class="form-group">
         <input class="form-group" type="email" value="<%-user.email%>" name="email">
         </div>
+        <% if (session.user && session.user.admin) {%>
+        <div class="form-group">
+        <input type="checkbox" <%- (user.admin)? 'checked': '' %> name="admin"> is admin
+        </div>
+        <% } %>
         <input class="form-group" type="submit">
         <input class="form-group" type="hidden" name="_csrf" value="<%= _csrf %>" />
     </form>

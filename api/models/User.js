@@ -22,9 +22,33 @@ module.exports = {
       required: true,
       unique: true
     },
+    online: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    admin: {
+      type: 'boolean',
+      defaultsTo: false
+    },
     cryptedPassword: {
       type:'string'
     }
+  },
+  toJSON: function(){
+    var obj = this.toObject();
+    delete obj.password;
+    delete obj.cryptedPassword;
+    delete obj.pass_confirmation;
+    return obj;
+  },
+  beforeValidation: function(values,next){
+    console.log(values);
+    if (!values.admin) {
+      values.admin = false;
+    } else if (values.admin === 'on') {
+      values.admin = true;
+    }
+    next();
   },
   beforeCreate: function(values,next){
     if (!values.password || values.password != values.pass_confirmation){

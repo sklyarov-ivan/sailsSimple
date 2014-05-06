@@ -33,12 +33,13 @@
       
     -->
     <link type="text/css" rel="stylesheet" href="/styles/bootstrap.css">
+    <link type="text/css" rel="stylesheet" href="/styles/custom.css">
   </head>
 
   <body>
 
   <nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
+  <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -53,9 +54,13 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/user">users</a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
+        <% if (session.authenticated) { %>
+        <li><a href="/user/show/<%=session.user.id%>">My Profile</a></li>
+          <% if (session.user && session.user.admin) {%>
+            <li><a href="/user">users</a></li>
+          <% } %>
+        <% } %>
+        <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
           <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
@@ -66,9 +71,24 @@
             <li class="divider"></li>
             <li><a href="#">One more separated link</a></li>
           </ul>
-        </li>
+        </li> -->
       </ul>
-      
+       <ul class="nav navbar-nav navbar-right">
+        <% if (session.authenticated){ %>
+          <li><a href="/session/destroy">Log Out</a></li>
+        <% } else { %>
+          <li>
+              <form method="POST" action="/session/create">
+                  <div class="form-group">
+                      <input type="text" name="email">
+                      <input type="password" name="password">
+                      <input class="form-group" type="submit">
+                  </div>
+                  <input class="form-group" type="hidden" name="_csrf" value="<%= _csrf %>" />
+              </form>
+          </li>
+        <% } %>
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

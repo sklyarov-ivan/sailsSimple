@@ -52,14 +52,25 @@ module.exports = {
                 }
                 req.session.authenticated = true;
                 req.session.user = user;
-                return res.redirect('/user/show/'+user.id);
+
+                user.online = true;
+                user.save(function(err){
+                    if (user.admin) {
+                        return res.redirect('/user');
+                    }
+                    return res.redirect('/user/show/'+user.id);
+                });
             });
 
         });
     },
     destroy: function(req,res,next) {
-        req.session.destroy();
-        return res.redirect('/');
+        var userid = req.session.user.id;
+        User.update(userid,{online:false},function(err){
+            if (err) return next(err);
+            req.session.destroy();
+            return res.redirect('/');
+        });
     },
 
   /**
