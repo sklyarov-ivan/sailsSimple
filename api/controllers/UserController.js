@@ -32,6 +32,9 @@ module.exports = {
 
       // res.json(user);
       // res.session.flash = {};
+      req.session.authenticated = true;
+      req.session.user = user;
+      // return res.redirect('/user/new');
       res.redirect('/user/show/'+user.id);
     });
   },

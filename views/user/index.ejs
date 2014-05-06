@@ -1,6 +1,7 @@
 <div class="container">
     <table class="table">
         <tr>
+            <td>id</td>
             <td>name</td>
             <td>title</td>
             <td>email</td>
@@ -8,6 +9,7 @@
         </tr>
         <% _.each(users, function(user,inx){ %>
             <tr>
+                <td><%= user.id %></td>
                 <td><%= user.name %></td>
                 <td><%= user.title %></td>
                 <td><%= user.email %></td>
