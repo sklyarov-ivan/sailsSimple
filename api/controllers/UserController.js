@@ -19,10 +19,7 @@ module.exports = {
     
   
   new : function(req,res){
-    res.locals.flash = _.clone(req.session.flash);
-      // console.log(res.locals.flash);
     res.view();
-    req.session.flash = {};
   },
   create: function(req,res,next){
     User.create(req.params.all(),function userCreated(err, user){
@@ -34,7 +31,7 @@ module.exports = {
       }
 
       res.json(user);
-      res.session.flash = {};
+      // res.session.flash = {};
     })
   },
 
