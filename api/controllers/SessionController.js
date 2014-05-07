@@ -55,6 +55,14 @@ module.exports = {
 
                 user.online = true;
                 user.save(function(err){
+                    if (err) return next(err);
+
+                    User.publishUpdate(user.id,{
+                        loggedIn:true,
+                        id:user.id
+                    });
+
+
                     if (user.admin) {
                         return res.redirect('/user');
                     }
@@ -68,6 +76,12 @@ module.exports = {
         var userid = req.session.user.id;
         User.update(userid,{online:false},function(err){
             if (err) return next(err);
+
+            User.publishUpdate(userid,{
+                loggedIn:false,
+                id:userid
+            });
+
             req.session.destroy();
             return res.redirect('/');
         });

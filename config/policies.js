@@ -20,12 +20,12 @@ module.exports.policies = {
   user: {
     'new':'flash',
     'create': 'flash',
+    'subscribe':'flash',
     'show':'isAvailableForView',
     'edit':'isAvailableForView',
     'update':'isAvailableForView',
     'destroy':'isAdmin',
     'index':'isAdmin',
-
     '*'  :'isAuthenticated'
   }
 

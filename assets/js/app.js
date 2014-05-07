@@ -19,19 +19,9 @@
   socket.on('connect', function socketConnected() {
 
     // Listen for Comet messages from Sails
-    socket.on('message', function messageReceived(message) {
+    socket.on('message', messageReceivedFromServer);
 
-      ///////////////////////////////////////////////////////////
-      // Replace the following with your own custom logic
-      // to run when a new message arrives from the Sails.js
-      // server.
-      ///////////////////////////////////////////////////////////
-      log('New comet message received :: ', message);
-      //////////////////////////////////////////////////////
-
-    });
-
-
+    socket.get('/user/subscribe');
     ///////////////////////////////////////////////////////////
     // Here's where you'll want to add any custom logic for
     // when the browser establishes its socket connection to 
@@ -62,10 +52,69 @@
   }
   
 
+    function messageReceivedFromServer(message) {
+
+      ///////////////////////////////////////////////////////////
+      // Replace the following with your own custom logic
+      // to run when a new message arrives from the Sails.js
+      // server.
+      ///////////////////////////////////////////////////////////
+      log('New comet message received :: ', message);
+      //////////////////////////////////////////////////////
+      if (message.model === 'user') {
+        var userId = message.id;
+        updateUserInDom(userId,message);
+      }
+    }
+
+    function updateUserInDom(userId, message) {
+        var page = document.location.pathname;
+        page = page.replace(/(\/)$/,'');
+        switch (page) {
+          case '/user':
+            if (message.verb === 'update'){
+              UserIndexPage.updateUser(userId,message);
+            }
+            if (message.verb === 'create'){
+              UserIndexPage.createUser(userId,message);
+            }
+            if (message.verb === 'destroy'){
+              UserIndexPage.deleteUser(userId,message);
+            }
+            break;
+        }
+    }
+
+
+    var UserIndexPage = {
+      updateUser: function(userId,message) {
+        if (message.data.loggedIn) {
+          $('tr[data-id='+userId+'] td').first().html('<i class="glyphicon glyphicon-plus-sign green"></i>');
+        } else {
+          $('tr[data-id='+userId+'] td').first().html('<i class="glyphicon glyphicon-minus-sign red"></i>');
+        }
+      },
+      createUser: function(userId,message){
+        var obj = {
+            user : message.data,
+            _csrf : window.overlord.csrf
+        }
+        $('td:last').after(
+            JST('assets/linker/templates/addUser.ejs')(obj)
+          );
+      },
+      deleteUser: function(userId,message){
+          $('tr[data-id='+userId+'] td').remove();
+
+      }
+    };
+
+
 })(
 
   // In case you're wrapping socket.io to prevent pollution of the global namespace,
   // you can replace `window.io` with your own `io` here:
   window.io
+
 
 );

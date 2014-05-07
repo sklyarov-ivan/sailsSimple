@@ -104,6 +104,15 @@ module.exports = {
       });
     });
   },
+  subscribe: function(req,res,next){
+    User.find(function getUsers(err,user){
+      if (err) next(err);
+
+      User.subscribe(req.socket);
+
+      User.subscribe(req.socket,user);
+    })
+  },
   /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to UserController)

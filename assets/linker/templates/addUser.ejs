@@ -1,16 +1,4 @@
-<div class="container">
-    <table class="table">
-        <tr>
-            <td>&nsbp;</td>
-            <td>id</td>
-            <td>name</td>
-            <td>title</td>
-            <td>email</td>
-            <td>role</td>
-            <td colspan="3">actions</td>
-        </tr>
-        <% _.each(users, function(user,inx){ %>
-            <tr data-id="<%=user.id%>">
+ <tr data-id="<%user.id%>">
                 <td class="icon-online">
                     <% if (user.online)  {%>
                     <i class="glyphicon glyphicon-plus-sign green"></i>
@@ -33,7 +21,3 @@
                     </form>
                 </td>
             </tr>
-        <% }) %>
-
-    </table>
-</div>
